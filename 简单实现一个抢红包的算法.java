@@ -13,7 +13,7 @@ import java.util.Random;
    private int leftMoney;
    private int leftCount;
    private Random rnd;
-   public void RandomRedPacket(int total ,int num){
+   public  RandomRedPacket(int total ,int num){
        this.leftMoney =total;
        this.leftCount = num;
        this.rnd = new Random();
@@ -29,5 +29,12 @@ import java.util.Random;
        this.leftMoney -= money;
        this.leftCount--;
        return money;
+   }
+   //保证先来的不一定抢到最大的  ， 不过后来的也不一定 ，这要看前面抢的金额，剩下的越多就有可能越大
+   public static void main(String args[]){
+       RandomRedPacket rrp = new RandomRedPacket((int)1000,(int)10);
+       for(int i=1;i<=10;i++){
+           System.out.println(" 第 " + i + " 个人抢到 ： " +  rrp.nextMoney() + " 元红包");
+       }
    }
  }
