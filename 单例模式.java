@@ -45,7 +45,7 @@ public class Singleton{
 3. 双重判断加锁 ，基于2的稍微改进 ，但容易出错
 
 public class Singleton {
-    private volatile static Singleton instance=null;
+    private volatile static Singleton instance=null;      //一定要加上volatile变量
     private Singleton(){
         
     }
@@ -102,60 +102,6 @@ public class Singleton{
 		 return Single_Holder.instance;
 	 }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
