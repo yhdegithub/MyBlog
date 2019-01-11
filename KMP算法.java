@@ -1,45 +1,58 @@
+/**
+ * 判断str2是否在str1中，是则返回起始字符索引在str1中的索引，否则返回-1
+ */
 public class KMP {
-    public static void main(String[] args) {
-        String target = "11010101110010101010"; String mode = "0010"; // 模式串// 主串
-        char[] t = target.toCharArray();char[] m = mode.toCharArray();      
-        System.out.println(matchProcess(t, m));
-        } // KMP匹配字符串
-        //计算部分匹配表，next[]值求法：一二位固定为0、1，其余位为部分匹配值+1.next[]值求法：一二位固定为0、1，其余位为部分匹配值+ //结构next[]数组
-    public static int[] next(char[] t) {
-        int[] next = new int[t.length];
-        next[0] = -1;
+
+    public static int getIndexOf(String str1, String str2) {
+        if (str1 == null || str2 == null || str2.length() < 1 || str1.length() < str2.length()) {
+            return -1;
+        }
         int i = 0;
-        int j = -1;
-        while (i < t.length - 1) {
-            if (j == -1 || t[i] == t[j]) {
+        int j = 0;
+        int[] nexts = getNext(str2);
+        while (i < str1.length() && j < str2.length()) {
+            if (str1.charAt(i) == str2.charAt(j)) {
                 i++;
                 j++;
-                if (t[i] != t[j]) {
-                    next[i] = j;
-                } else {
-                    next[i] = next[j];
-                }
+            } else if (j == 0) {
+                i++;
             } else {
-                j = next[j];
+                j = nexts[j];
             }
         }
-        return next;
+        return j == str2.length() ? i - j : -1;
     }
-      //字符串匹配
-        public static int matchProcess ( char[] s, char[] t){
-            int[] next = getNext(t);
-            int i = 0;
-            int j = 0;
-            while (i <= s.length - 1 && j <= t.length - 1) {
-                if (j == -1 || s[i] == t[j]) {
-                    i++;
-                    j++;
-                } else {
-                    j =  next[j];
-                }
-            }
-            if (j < t.length) {
-                return -1;
-            } else return i - t.length; // 返回模式串在主串中的头下标
+
+    public static int[] getNext(String str2) {
+        int len = str2.length();
+        if (len == 1) {
+            return new int[]{-1};
         }
+
+        int[] nexts = new int[len];
+        nexts[0] = -1;
+        nexts[1] = 0;
+
+        int cn = 0;
+        for (int i = 2; i < len; i++) {
+            if (str2.charAt(i - 1) == cn) {
+                nexts[i++] = ++cn;
+            } else if (cn > 0) {
+                cn = nexts[cn];
+            } else {
+                nexts[i++] = 0;
+            }
+        }
+        return nexts;
     }
+
+    public static void main(String[] args) {
+        String target = "aca abacad"; String mode = "abacad"; // 模式串// 主串
+        System.out.println(getIndexOf(target,mode));
+        System.out.println(target.indexOf(mode));
+    }
+}
+
+
+参考博客
+https://blog.csdn.net/chanmufeng/article/details/83868088 ，之前写的是错误的 ，以后看笔记注意到
