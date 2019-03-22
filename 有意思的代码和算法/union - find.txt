@@ -1,0 +1,157 @@
+/***union - find 算法总结 主要用于社交网络，商品推荐等方面，在最理想的情况下是追求union-find都是O(1),当然初始化都是O(N)的，
+ */
+//(1)quick - find 方法
+import java.io.*;
+import java.util.*;
+public class Solution{
+    static int count ;  // CC个数
+    static int fa[];    //所属CC的标号
+    //初始化
+    public  static void init(int n){
+        count = n;
+        fa = new int[n+1];   //这里只是故意不用fa[0]的，其实无碍
+        for(int i=1;i<=n;i++)
+            fa[i] = i;
+    }
+    //查找所属连通分量
+    public static int find(int x){
+        return fa[x];
+    }
+    //合并两个连通分量
+    public static void union(int x , int y){
+
+        int xRoot = find(x)  , yRoot = find(y); //x， y所属连通分量
+        if(xRoot==yRoot)
+            return;
+        //要依次修改所有的fa[i]中值为yRoot;
+        for(int i=1;i<fa.length;i++)
+            if(fa[i]==yRoot)
+                fa[i] = xRoot;
+        count--;    //连通数目减少
+    }
+    public static boolean connected(int x,int y){
+        return find(x) == find(y);
+    }
+
+    public static void main(String args[]) throws  Exception{
+        Scanner sc  = new Scanner(new FileInputStream("F:\\in.txt"),"UTF-8" );
+//n个结点           ，  m对关系          ，求 k组连通性
+        int n =sc.nextInt() , m = sc.nextInt(), k =sc.nextInt();
+        init(n);
+//初始化m 对关系
+        for(int i=1;i<=m;i++){
+            int x = sc.nextInt() , y = sc.nextInt();
+            if(find(x)==find(y))
+                continue;
+            union(x,y);
+        }
+// k组连通性
+        for(int i=1;i<=k;i++){
+            int x = sc.nextInt() , y = sc.nextInt();
+            System.out.print(x + "--" + y + " ");
+            if(find(x)==find(y))
+                System.out.println("true");
+            else
+                System.out.println("false");
+        }
+        
+    }
+
+}
+
+
+// (2)quick - union方法
+  //找根触点,根触点x的fa[x]一定和自己相等 即x==fa[x],一定存在这样一个点
+    public  static int find(int x){
+        while(x!=fa[x])
+            x = fa[x];
+        return x;
+    }
+    //在 O(lg(n)~~n)之间完成，关键是看树的高度
+    public static void union(int x,int y){
+        int xRoot = find(x) , yRoot = find(y);
+        if(xRoot==yRoot)
+            return;
+        fa[yRoot] = xRoot;
+        count--;
+
+    }
+
+
+//   (3)加权的qucik-union。 保证每棵树都不是斜树，时间定在 lg(n)之上
+   static int sz[];//这个表示每颗树的节点数
+    public  static void init(int n){
+        count = n;
+        fa = new int[n+1];   //这里只是故意不用fa[0]的，其实无碍
+        for(int i=1;i<=n;i++)
+            fa[i] = i;
+        //还要定义 size
+        sz = new int[n+1];
+        for(int i =1;i<=n;i++)
+            sz[i] = 1;
+    }
+    //快速查找
+    public static int find(int x){
+        while(x!=fa[x])
+            x = fa[x];
+        return x;
+    }
+    //合并算法
+    public static void union(int x , int y ){
+
+        int xRoot = find(x)  , yRoot = find(y);
+        if(xRoot==yRoot)
+            return;
+        if(sz[xRoot]< sz[yRoot]){
+            sz[yRoot] += sz[xRoot];
+            fa[xRoot] = yRoot;
+        }
+        else{
+            sz[xRoot] += sz[yRoot];
+            fa[yRoot] = xRoot;
+
+        }
+
+        count--;
+    }
+
+//(4) 最优化的路径压缩quick -union ,目标是得到扁平化的树，即每个结点都连接到根触点上， 操作很简单，就是把find()添加一个循环
+//把路径上遇到的所有点都直接连到根节点。但是每个操作在最坏的情况下都不是常数级别
+
+  //路径压缩
+    public static int find(int x){
+        int t = x;
+        while(x!=fa[x])
+            x = fa[x]; //找到根触点了
+//修改路径上每一个节点的值为根触点
+        while(t!=fa[t]){
+            int temp = fa[t];
+            fa[t] = x;
+            t  = temp;
+        }
+        return x;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
