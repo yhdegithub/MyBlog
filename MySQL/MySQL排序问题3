@@ -1,0 +1,5 @@
+### 分组再排序的问题
+
+用<MySQL排序问题2>中介绍的开窗函数 ，加上partition实在不要太方便，直接欣赏这篇博客
+
+https://blog.csdn.net/u011726005/article/details/94592866
