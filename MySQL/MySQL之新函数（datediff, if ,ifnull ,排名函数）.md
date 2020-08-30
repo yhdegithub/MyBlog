@@ -47,3 +47,7 @@
 不并列排名 ，直接就是连续的，谁先查出来谁就排第前头 **（1,2,3,4,5,6,7）**
 
 ![image-20200830091107160](C:\Users\23712\AppData\Roaming\Typora\typora-user-images\image-20200830091107160.png)
+![avatar](https://github.com/yhdegithub/MyBlog/blob/master/MySQL/MySQL_Rank.jpeg)
+https://github.com/yhdegithub/MyBlog/blob/master/MySQL/MySQL_Rank.jpeg
+
+图片好像有问题 ，可以参考这个实验https://blog.csdn.net/u011726005/article/details/94592866
